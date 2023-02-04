@@ -10,6 +10,34 @@
 <title>회원가입</title>
 <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
+<script>
+// 아이디 유효성 검사(1 = 중복 / 0 != 중복)
+	$("#userId").focusout(function() {
+		// id = "id_reg" / name = "userId"
+		var userId = $('#userId').val();
+		$.ajax({
+			url : "com.vita.user.UserRegisterServlet",
+			type : "post",
+			data : {userId : userId},
+			dataType : 'json',
+			success : function(result) {
+				console.log("1 = 중복o / 0 = 중복x : "+ data);							
+				
+				if (result == 0) {
+						// 1 : 아이디가 중복되는 문구
+						$("#id_check").html("사용중인 아이디입니다 :p");
+						$("#id_check").attr("color", "red");
+						$("#submit").attr("disabled", true);
+					} else {
+						$("#id_check").html("사용할 수 있는 아이디입니다.");
+						$("#id_check").attr("color", "green");
+					}
+				}, error : function() {
+						console.log("실패");
+				}
+			});
+		});
+</script>
 </head>
 <body>
 	<body>
@@ -21,6 +49,7 @@
                         <h4 class="form-title">회원 가입</h4>
                         <div class="form-group">
                             <input type="email" class="form-input" name="userId" id="userId" placeholder="이메일아이디"/>
+                            <font class="id_check" id="id_check"></font>
                         </div>
                         <div class="form-group">
                             <input type="text" class="form-input" name="userName" id="userName" placeholder="이름"/>
@@ -58,7 +87,50 @@
             </div>
         </section>
     </div>
-    
+    <%
+    	String messageContent = null;
+        if(session.getAttribute("messageContent")!=null){
+        	messageContent = (String)session.getAttribute("messageContent");
+        }
+    	String messageType = null;
+        if(session.getAttribute("messageType")!=null){
+        	messageType = (String)session.getAttribute("messageType");
+        }
+        
+        if(messageContent != null){            
+    %>
+    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    	<div class = "vertical-alignment-helper">
+    		<<div class="modal-dialog modal-lg" role="document">>
+    			<div class = "modal-content  <% if(messageType.equals("오류 메세지")) out.println("panel-warning"); 
+    			else out.println("panel-success"); %>">
+    			<div class = "modal-header panel-heading">
+    				<button type = "button" class = "close" data-dismiss="modal">
+    					<span aria-hidden="true">&times;</span>
+    					<span class = "sr-only">Close</span>
+    				</button>
+    				<h3 class ="modal-title">
+    					<%= messageType %>
+    				</h3>
+    				</div>
+    				<div class = "modal-body">
+    				<%= messageContent %>
+    				</div>
+    				<div class = "modal-footer">
+    					<button type = "button" class="btn btn-primary" data-dismiss="modal">확인</button>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    <script>
+    	$('#messageModal').modal("show")
+    </script>
+    <%
+    	session.removeAttribute("messageContent");
+    	session.removeAttribute("messageType");
+        }
+    %>
 </body>
 </html>
 

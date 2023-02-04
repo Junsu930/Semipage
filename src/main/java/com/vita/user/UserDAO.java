@@ -87,5 +87,34 @@ public class UserDAO {
 		return -1;
 	}
 	
+	public int checkId(String id) {
+		String sql = "SELECT * FROM SHOPPING_USER WHERE USER_ID = ?";
+		int idCheck = 0;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next() || id.equals("")) {
+				idCheck=0;
+			} else {
+				idCheck = 1;
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+				try {
+					if( rs!=null) rs.close();
+					if( pstmt!=null) pstmt.close();
+					if( conn!=null) conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return idCheck;
+	}
 
 }

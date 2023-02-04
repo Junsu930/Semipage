@@ -6040,7 +6040,7 @@ a.close.disabled {
 .modal-dialog-scrollable .modal-body {
   overflow-y: auto;
 }
-
+/*
 .modal-dialog-centered {
   display: -ms-flexbox;
   display: flex;
@@ -6048,7 +6048,8 @@ a.close.disabled {
   align-items: center;
   min-height: calc(100% - 1rem);
 }
-
+*/
+/*
 .modal-dialog-centered::before {
   display: block;
   height: calc(100vh - 1rem);
@@ -6057,7 +6058,7 @@ a.close.disabled {
   height: min-content;
   content: "";
 }
-
+*/
 .modal-dialog-centered.modal-dialog-scrollable {
   -ms-flex-direction: column;
   flex-direction: column;
@@ -6088,6 +6089,7 @@ a.close.disabled {
   border-radius: 0.3rem;
   outline: 0;
 }
+
 
 .modal-backdrop {
   position: fixed;
